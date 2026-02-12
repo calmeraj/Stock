@@ -170,9 +170,9 @@ if run_button or auto_refresh:
             sector_list
         )
 
-# Apply Filter
-if selected_sector != "All":
-    df = df[df["Sector"] == selected_sector]
+        # Apply Filter
+        if selected_sector != "All":
+            df = df[df["Sector"] == selected_sector]
 
         # ===== KPI CARDS =====
         col1, col2, col3, col4 = st.columns(4)

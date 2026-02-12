@@ -147,7 +147,7 @@ def run_scanner():
         res = analyze_stock(stock)
         if res:
             results.append(res)
-        time.sleep(0.6)
+        time.sleep(0.3)
     return pd.DataFrame(results)
 
 # ================= MAIN EXECUTION =================
@@ -212,10 +212,11 @@ if run_button or auto_refresh:
                     breakout_df[
                         [
                             "Stock",
-                            "Break 5m High Time",
-                            "Break 5m Low Time",
-                            "Break Prev High Time",
-                            "Break Prev Low Time",
+                            "Strength",
+                            # "Break 5m High Time",
+                            # "Break 5m Low Time",
+                            # "Break Prev High Time",
+                            # "Break Prev Low Time",
                             "Latest Break Time",
                         ]
                     ],

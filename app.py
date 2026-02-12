@@ -160,6 +160,19 @@ if run_button or auto_refresh:
     else:
 
         df = df.sort_values("Strength", ascending=False)
+        st.sidebar.markdown("### 🏢 Filter by Sector")
+
+        sector_list = sorted(df["Sector"].dropna().unique().tolist())
+        sector_list.insert(0, "All")
+        
+        selected_sector = st.sidebar.selectbox(
+            "Select Sector",
+            sector_list
+        )
+
+# Apply Filter
+if selected_sector != "All":
+    df = df[df["Sector"] == selected_sector]
 
         # ===== KPI CARDS =====
         col1, col2, col3, col4 = st.columns(4)

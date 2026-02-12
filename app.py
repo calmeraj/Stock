@@ -24,27 +24,27 @@ st.sidebar.header("⚙️ Scanner Settings")
 refresh_data = st.sidebar.checkbox("Auto Refresh (5 min)", value=False)
 run_button = st.sidebar.button("🚀 Run Scanner")
 
-# STOCK_LIST = [
-#     "RELIANCE.NS",
-#     "TCS.NS",
-#     "INFY.NS",
-#     "ICICIBANK.NS",
-#     "HDFCBANK.NS"
-# ]
+STOCK_LIST = [
+    "RELIANCE.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "ICICIBANK.NS",
+    "HDFCBANK.NS"
+]
 
-STOCK_LIST = ['IDEA.NS','BSE.NS', 'INDUSTOWER.NS', 'RBLBANK.NS', 'GLENMARK.NS', 'KFINTECH.NS', 'NATIONALUM.NS', 'EICHERMOT.NS', 'ASTRAL.NS', 'M&M.NS', 'VEDL.NS', 'ASHOKLEY.NS', 
- 'VOLTAS.NS', 'CHOLAFIN.NS','BIOCON.NS', 'CAMS.NS', 'ANGELONE.NS', 'EXIDEIND.NS', 'MARUTI.NS', 'UNOMINDA.NS', 'IRFC.NS', 'NMDC.NS', 'SAIL.NS', 'NYKAA.NS', 'ABCAPITAL.NS', 'TVSMOTOR.NS', 
- 'POWERGRID.NS', 'AMBER.NS', 'DRREDDY.NS', 'LTF.NS', 'RELIANCE.NS', 'PNBHOUSING.NS', 'NAUKRI.NS', 'SHRIRAMFIN.NS', 'PHOENIXLTD.NS', 'PFC.NS', 'PAYTM.NS', 'KAYNES.NS', 'INOXWIND.NS', 
- 'IREDA.NS', 'CANBK.NS', 'CDSL.NS','NUVAMA.NS', 'ETERNAL.NS', 'MAXHEALTH.NS', 'TATAPOWER.NS', 'PPLPHARMA.NS', 'BDL.NS', 'BHARTIARTL.NS', 'SBILIFE.NS', 
- 'AUROPHARMA.NS', 'SUZLON.NS', 'LAURUSLABS.NS', 'RVNL.NS', 'YESBANK.NS', 'MFSL.NS', 'SONACOMS.NS','SUNPHARMA.NS', 'OIL.NS', 'HDFCLIFE.NS', 'SAMMAANCAP.NS', 'KPITTECH.NS', 'HINDALCO.NS', 
- 'IIFL.NS', 'BAJAJFINSV.NS', 'ALKEM.NS', 'BHEL.NS', 'HINDZINC.NS', 'HUDCO.NS', 'BANDHANBNK.NS', 'AXISBANK.NS', 'TATASTEEL.NS', 'RECLTD.NS', 'IDFCFIRSTB.NS', 'NBCC.NS', 'BHARATFORG.NS', '360ONE.NS', 
- 'ASIANPAINT.NS', 'BOSCHLTD.NS', 'TATAELXSI.NS', 'MUTHOOTFIN.NS', 'IRCTC.NS', 'UNIONBANK.NS', 'BANKINDIA.NS', 'FEDERALBNK.NS', 'SHREECEM.NS', 'TITAGARH.NS', 'JSWENERGY.NS', 'PNB.NS', 'COALINDIA.NS', 
- 'BAJFINANCE.NS', 'MOTHERSON.NS', 'JINDALSTEL.NS', 'INDUSINDBK.NS', 'JUBLFOOD.NS', 'LUPIN.NS', 'HEROMOTOCO.NS', 'HDFCBANK.NS', 'ZYDUSLIFE.NS', 'BAJAJ-AUTO.NS', 'MANAPPURAM.NS', 'BANKBARODA.NS', 'TATACONSUM.NS', 'CONCOR.NS', 'ADANIENT.NS', 'DALBHARAT.NS', 'JSWSTEEL.NS', 'HDFCAMC.NS', 'CUMMINSIND.NS', 'DIXON.NS', 'ADANIGREEN.NS', 
- 'INDIANB.NS', 'KALYANKJIL.NS', 'INDHOTEL.NS', 'TRENT.NS', 'LICHSGFIN.NS', 'IOC.NS', 'BLUESTARCO.NS', 'CROMPTON.NS', 'LICI.NS', 'BRITANNIA.NS', 'BPCL.NS', 'HAVELLS.NS', 'PGEL.NS', 'OFSS.NS', 'AMBUJACEM.NS', 'ICICIBANK.NS', 'TIINDIA.NS', 'GRASIM.NS', 
- 'FORTIS.NS', 'SBICARD.NS', 'HFCL.NS', 'KOTAKBANK.NS', 'HINDPETRO.NS', 'SUPREMEIND.NS', 'LTIM.NS', 'AUBANK.NS', 'ADANIENSOL.NS', 'NESTLEIND.NS', 'DLF.NS', 'SBIN.NS', 'NHPC.NS', 'MAZDOCK.NS', 'NCC.NS', 'ULTRACEMCO.NS', 'POLYCAB.NS', 'DELHIVERY.NS', 'GAIL.NS', 'NTPC.NS', 'INDIGO.NS', 'PETRONET.NS', 'BEL.NS', 
- 'ADANIPORTS.NS', 'APLAPOLLO.NS', 'IEX.NS', 'MCX.NS', 'ICICIPRULI.NS', 'CGPOWER.NS', 'WIPRO.NS', 'TORNTPHARM.NS', 'TATACHEM.NS', 'TATATECH.NS', 'ONGC.NS', 'GMRAIRPORT.NS', 'TITAN.NS', 
- 'MANKIND.NS', 'UNITDSPR.NS', 'HAL.NS', 'DMART.NS', 'PIDILITIND.NS', 'PAGEIND.NS', 'ABB.NS', 'MARICO.NS', 'UPL.NS', 'SOLARINDS.NS', 'LT.NS', 'DABUR.NS', 'GODREJCP.NS', 'PATANJALI.NS', 'APOLLOHOSP.NS', 'HINDUNILVR.NS', 'INFY.NS', 'SYNGENE.NS', 'SRF.NS', 'LODHA.NS', 
- 'CYIENT.NS', 'TECHM.NS', 'TCS.NS', 'CIPLA.NS', 'ICICIGI.NS', 'COLPAL.NS', 'HCLTECH.NS', 'IGL.NS', 'OBEROIRLTY.NS', 'COFORGE.NS', 'DIVISLAB.NS', 'GODREJPROP.NS', 'PIIND.NS', 'ITC.NS', 'SIEMENS.NS', 'KEI.NS', 'MPHASIS.NS', 'POLICYBZR.NS', 'TORNTPOWER.NS', 'PRESTIGE.NS', 'PERSISTENT.NS', 'VBL.NS'] 
+# STOCK_LIST = ['IDEA.NS','BSE.NS', 'INDUSTOWER.NS', 'RBLBANK.NS', 'GLENMARK.NS', 'KFINTECH.NS', 'NATIONALUM.NS', 'EICHERMOT.NS', 'ASTRAL.NS', 'M&M.NS', 'VEDL.NS', 'ASHOKLEY.NS', 
+#  'VOLTAS.NS', 'CHOLAFIN.NS','BIOCON.NS', 'CAMS.NS', 'ANGELONE.NS', 'EXIDEIND.NS', 'MARUTI.NS', 'UNOMINDA.NS', 'IRFC.NS', 'NMDC.NS', 'SAIL.NS', 'NYKAA.NS', 'ABCAPITAL.NS', 'TVSMOTOR.NS', 
+#  'POWERGRID.NS', 'AMBER.NS', 'DRREDDY.NS', 'LTF.NS', 'RELIANCE.NS', 'PNBHOUSING.NS', 'NAUKRI.NS', 'SHRIRAMFIN.NS', 'PHOENIXLTD.NS', 'PFC.NS', 'PAYTM.NS', 'KAYNES.NS', 'INOXWIND.NS', 
+#  'IREDA.NS', 'CANBK.NS', 'CDSL.NS','NUVAMA.NS', 'ETERNAL.NS', 'MAXHEALTH.NS', 'TATAPOWER.NS', 'PPLPHARMA.NS', 'BDL.NS', 'BHARTIARTL.NS', 'SBILIFE.NS', 
+#  'AUROPHARMA.NS', 'SUZLON.NS', 'LAURUSLABS.NS', 'RVNL.NS', 'YESBANK.NS', 'MFSL.NS', 'SONACOMS.NS','SUNPHARMA.NS', 'OIL.NS', 'HDFCLIFE.NS', 'SAMMAANCAP.NS', 'KPITTECH.NS', 'HINDALCO.NS', 
+#  'IIFL.NS', 'BAJAJFINSV.NS', 'ALKEM.NS', 'BHEL.NS', 'HINDZINC.NS', 'HUDCO.NS', 'BANDHANBNK.NS', 'AXISBANK.NS', 'TATASTEEL.NS', 'RECLTD.NS', 'IDFCFIRSTB.NS', 'NBCC.NS', 'BHARATFORG.NS', '360ONE.NS', 
+#  'ASIANPAINT.NS', 'BOSCHLTD.NS', 'TATAELXSI.NS', 'MUTHOOTFIN.NS', 'IRCTC.NS', 'UNIONBANK.NS', 'BANKINDIA.NS', 'FEDERALBNK.NS', 'SHREECEM.NS', 'TITAGARH.NS', 'JSWENERGY.NS', 'PNB.NS', 'COALINDIA.NS', 
+#  'BAJFINANCE.NS', 'MOTHERSON.NS', 'JINDALSTEL.NS', 'INDUSINDBK.NS', 'JUBLFOOD.NS', 'LUPIN.NS', 'HEROMOTOCO.NS', 'HDFCBANK.NS', 'ZYDUSLIFE.NS', 'BAJAJ-AUTO.NS', 'MANAPPURAM.NS', 'BANKBARODA.NS', 'TATACONSUM.NS', 'CONCOR.NS', 'ADANIENT.NS', 'DALBHARAT.NS', 'JSWSTEEL.NS', 'HDFCAMC.NS', 'CUMMINSIND.NS', 'DIXON.NS', 'ADANIGREEN.NS', 
+#  'INDIANB.NS', 'KALYANKJIL.NS', 'INDHOTEL.NS', 'TRENT.NS', 'LICHSGFIN.NS', 'IOC.NS', 'BLUESTARCO.NS', 'CROMPTON.NS', 'LICI.NS', 'BRITANNIA.NS', 'BPCL.NS', 'HAVELLS.NS', 'PGEL.NS', 'OFSS.NS', 'AMBUJACEM.NS', 'ICICIBANK.NS', 'TIINDIA.NS', 'GRASIM.NS', 
+#  'FORTIS.NS', 'SBICARD.NS', 'HFCL.NS', 'KOTAKBANK.NS', 'HINDPETRO.NS', 'SUPREMEIND.NS', 'LTIM.NS', 'AUBANK.NS', 'ADANIENSOL.NS', 'NESTLEIND.NS', 'DLF.NS', 'SBIN.NS', 'NHPC.NS', 'MAZDOCK.NS', 'NCC.NS', 'ULTRACEMCO.NS', 'POLYCAB.NS', 'DELHIVERY.NS', 'GAIL.NS', 'NTPC.NS', 'INDIGO.NS', 'PETRONET.NS', 'BEL.NS', 
+#  'ADANIPORTS.NS', 'APLAPOLLO.NS', 'IEX.NS', 'MCX.NS', 'ICICIPRULI.NS', 'CGPOWER.NS', 'WIPRO.NS', 'TORNTPHARM.NS', 'TATACHEM.NS', 'TATATECH.NS', 'ONGC.NS', 'GMRAIRPORT.NS', 'TITAN.NS', 
+#  'MANKIND.NS', 'UNITDSPR.NS', 'HAL.NS', 'DMART.NS', 'PIDILITIND.NS', 'PAGEIND.NS', 'ABB.NS', 'MARICO.NS', 'UPL.NS', 'SOLARINDS.NS', 'LT.NS', 'DABUR.NS', 'GODREJCP.NS', 'PATANJALI.NS', 'APOLLOHOSP.NS', 'HINDUNILVR.NS', 'INFY.NS', 'SYNGENE.NS', 'SRF.NS', 'LODHA.NS', 
+#  'CYIENT.NS', 'TECHM.NS', 'TCS.NS', 'CIPLA.NS', 'ICICIGI.NS', 'COLPAL.NS', 'HCLTECH.NS', 'IGL.NS', 'OBEROIRLTY.NS', 'COFORGE.NS', 'DIVISLAB.NS', 'GODREJPROP.NS', 'PIIND.NS', 'ITC.NS', 'SIEMENS.NS', 'KEI.NS', 'MPHASIS.NS', 'POLICYBZR.NS', 'TORNTPOWER.NS', 'PRESTIGE.NS', 'PERSISTENT.NS', 'VBL.NS'] 
 
 # ================= RSI FUNCTION =================
 def calculate_rsi(close, window=14):
@@ -183,28 +183,28 @@ if run_button or refresh_data:
             st.info("No breakout stocks detected")
     
     # ================= INTRADAY BOOST =================
-    with col_right:
-        st.markdown("### 🚀 Intraday Boost")
-    
-        boost_df = df.sort_values("R-Factor", ascending=False).head(10)
-    
-        boost_df["Direction"] = np.where(
-            boost_df["Change %"] > 0, "UP", "DOWN"
-        )
-    
-        fig_boost = px.bar(
-            boost_df,
-            x="Stock",
-            y="R-Factor",
-            color="Direction",
-            color_discrete_map={
-                "UP": "green",
-                "DOWN": "red"
-            },
-            title="Top Momentum Stocks (R-Factor)"
-        )
-    
-        st.plotly_chart(fig_boost, use_container_width=True)
+        with col_right:
+            st.markdown("### 🚀 Intraday Boost")
+        
+            boost_df = df.sort_values("R-Factor", ascending=False).head(10)
+        
+            boost_df["Direction"] = np.where(
+                boost_df["Change %"] > 0, "UP", "DOWN"
+            )
+        
+            fig_boost = px.bar(
+                boost_df,
+                x="Stock",
+                y="R-Factor",
+                color="Direction",
+                color_discrete_map={
+                    "UP": "green",
+                    "DOWN": "red"
+                },
+                title="Top Momentum Stocks (R-Factor)"
+            )
+        
+            st.plotly_chart(fig_boost, use_container_width=True)
 
 
         # ================= KPI ROW =================

@@ -154,178 +154,218 @@ def run_scanner():
 if run_button or auto_refresh:
 
     df = run_scanner()
-
-    if df.empty:
-        st.warning("No data available")
-    else:
-
-        df = df.sort_values("Strength", ascending=False)
-        st.sidebar.markdown("### 🏢 Filter by Sector")
-
-        sector_list = sorted(df["Sector"].dropna().unique().tolist())
-        sector_list.insert(0, "All")
+    tab1, tab2 = st.tabs(["📊 Market View", "🏆 Top 5 by Sector"])
+    with tab1:
         
-        selected_sector = st.sidebar.selectbox(
-            "Select Sector",
-            sector_list
-        )
-
-        # Apply Filter
-        if selected_sector != "All":
-            df = df[df["Sector"] == selected_sector]
-
-        # ===== KPI CARDS =====
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total Stocks", len(df))
-        col2.metric("Strongest Stock", df.iloc[0]["Stock"])
-        col3.metric("Top Strength", df.iloc[0]["Strength"])
-        col4.metric("Positive Stocks", len(df[df["Change %"] > 0]))
-
-        st.markdown("---")
-
-        # ================= MARKET PULSE =================
-        st.markdown("## 🔥 Market Pulse")
-
-        col_left, col_right = st.columns(2)
-
-        # ===== Breakout Beacon =====
-        with col_left:
-            st.markdown("### 🚨 Breakout Beacon")
+            if df.empty:
+                st.warning("No data available")
+            else:
         
-            breakout_df = df[
-                df["Break 5m High Time"].notna() |
-                df["Break Prev High Time"].notna() |
-                df["Break Prev Low Time"].notna()
-            ].copy()
+                df = df.sort_values("Strength", ascending=False)
+                # st.sidebar.markdown("### 🏢 Filter by Sector")
         
-            if not breakout_df.empty:
+                # sector_list = sorted(df["Sector"].dropna().unique().tolist())
+                # sector_list.insert(0, "All")
+                
+                # selected_sector = st.sidebar.selectbox(
+                #     "Select Sector",
+                #     sector_list
+                # )
         
-                # ===== ADD LATEST BREAK TIME COLUMN =====
-                def get_latest_break(row):
-                    times = [
-                        row["Break 5m High Time"],
-                        row["Break 5m Low Time"],
-                        row["Break Prev High Time"],
-                        row["Break Prev Low Time"],
-                    ]
+                # # Apply Filter
+                # if selected_sector != "All":
+                #     df = df[df["Sector"] == selected_sector]
         
-                    times = [t for t in times if pd.notna(t)]
+                # ===== KPI CARDS =====
+                col1, col2, col3, col4 = st.columns(4)
+                col1.metric("Total Stocks", len(df))
+                col2.metric("Strongest Stock", df.iloc[0]["Stock"])
+                col3.metric("Top Strength", df.iloc[0]["Strength"])
+                col4.metric("Positive Stocks", len(df[df["Change %"] > 0]))
         
-                    if times:
-                        return max(times, key=lambda t: datetime.strptime(t, "%H:%M"))
+                st.markdown("---")
+        
+                # ================= MARKET PULSE =================
+                st.markdown("## 🔥 Market Pulse")
+        
+                col_left, col_right = st.columns(2)
+        
+                # ===== Breakout Beacon =====
+                with col_left:
+                    st.markdown("### 🚨 Breakout Beacon")
+                
+                    breakout_df = df[
+                        df["Break 5m High Time"].notna() |
+                        df["Break Prev High Time"].notna() |
+                        df["Break Prev Low Time"].notna()
+                    ].copy()
+                
+                    if not breakout_df.empty:
+                
+                        # ===== ADD LATEST BREAK TIME COLUMN =====
+                        def get_latest_break(row):
+                            times = [
+                                row["Break 5m High Time"],
+                                row["Break 5m Low Time"],
+                                row["Break Prev High Time"],
+                                row["Break Prev Low Time"],
+                            ]
+                
+                            times = [t for t in times if pd.notna(t)]
+                
+                            if times:
+                                return max(times, key=lambda t: datetime.strptime(t, "%H:%M"))
+                            else:
+                                return None
+                
+                        breakout_df["Latest Break Time"] = breakout_df.apply(get_latest_break, axis=1)
+                
+                        # Optional: sort by latest time descending
+                        breakout_df = breakout_df.sort_values("Latest Break Time", ascending=False)
+                
+                        st.dataframe(
+                            breakout_df[
+                                [
+                                    "Stock",
+                                    "Strength",
+                                    # "Break 5m High Time",
+                                    # "Break 5m Low Time",
+                                    # "Break Prev High Time",
+                                    # "Break Prev Low Time",
+                                    "Latest Break Time",
+                                ]
+                            ],
+                            use_container_width=True
+                        )
+                
                     else:
-                        return None
+                        st.info("No breakout stocks")
         
-                breakout_df["Latest Break Time"] = breakout_df.apply(get_latest_break, axis=1)
+                # with col_left:
+                #     st.markdown("### 🚨 Breakout Beacon")
         
-                # Optional: sort by latest time descending
-                breakout_df = breakout_df.sort_values("Latest Break Time", ascending=False)
+                #     breakout_df = df[
+                #         df["Break 5m High Time"].notna() |
+                #         df["Break Prev High Time"].notna() |
+                #         df["Break Prev Low Time"].notna()
+                #     ]
+                    
+                    
         
-                st.dataframe(
-                    breakout_df[
-                        [
-                            "Stock",
-                            "Strength",
-                            # "Break 5m High Time",
-                            # "Break 5m Low Time",
-                            # "Break Prev High Time",
-                            # "Break Prev Low Time",
-                            "Latest Break Time",
-                        ]
-                    ],
-                    use_container_width=True
+                #     if not breakout_df.empty:
+                #         st.dataframe(breakout_df, use_container_width=True)
+                #     else:
+                #         st.info("No breakout stocks")
+        
+                # ===== Intraday Boost =====
+                with col_right:
+                    st.markdown("### 🚀 Intraday Boost")
+        
+                    boost_df = df.sort_values("R-Factor", ascending=False).head(10)
+                    boost_df["Direction"] = np.where(
+                        boost_df["Change %"] > 0, "UP", "DOWN"
+                    )
+                    boost_df = boost_df[['Stock','Close','Change %','Strength','Direction']]
+                    boost_df.reset_index(drop=True, inplace=True)
+                    
+        
+                    if not boost_df.empty:
+                        st.dataframe(boost_df, use_container_width=True)
+                    else:
+                        st.info("No breakout stocks")
+                             
+        
+                    # fig_boost = px.bar(
+                    #     boost_df,
+                    #     x="Stock",
+                    #     y="R-Factor",
+                    #     color="Direction",
+                    #     color_discrete_map={
+                    #         "UP": "green",
+                    #         "DOWN": "red"
+                    #     }
+                    # )
+        
+                    # st.plotly_chart(fig_boost, use_container_width=True)
+        
+                st.markdown("---")
+        
+                # ================= SECTOR CHART =================
+                st.subheader("📊 Sector Average Change %")
+        
+                sector_df = (
+                    df.groupby("Sector")["Change %"]
+                    .mean()
+                    .reset_index()
+                    .sort_values("Change %", ascending=False)
                 )
         
-            else:
-                st.info("No breakout stocks")
+                fig_sector = px.bar(
+                    sector_df,
+                    x="Sector",
+                    y="Change %",
+                    color="Change %",
+                    color_continuous_scale=["red", "yellow", "green"]
+                )
+        
+                st.plotly_chart(fig_sector, use_container_width=True)
+        
+                st.markdown("---")
+        
+                # # ================= STRENGTH CHART =================
+                # st.subheader("📈 Stock Strength Ranking")
+        
+                # fig_strength = px.bar(
+                #     df,
+                #     x="Stock",
+                #     y="Strength",
+                #     color="Strength",
+                #     color_continuous_scale=["red", "yellow", "green"]
+                # )
+        
+                # st.plotly_chart(fig_strength, use_container_width=True)
+        
+                # ================= TABLE =================
+                st.subheader("📋 Detailed Data")
+                st.dataframe(df, use_container_width=True)
+        # ================= TOP 5 BY SECTOR TAB =================
+    with tab2:
+    
+        st.subheader("🏆 Top 5 Stocks by Sector")
+    
+        if df.empty:
+            st.warning("No data available")
+        else:
+    
+            # Sort once
+            df_sorted = df.sort_values("Strength", ascending=False)
+    
+            sectors = sorted(df_sorted["Sector"].dropna().unique())
+    
+            for sector in sectors:
+    
+                sector_df = df_sorted[df_sorted["Sector"] == sector].head(5)
+    
+                if not sector_df.empty:
+    
+                    st.markdown(f"### 📌 {sector}")
+    
+                    st.dataframe(
+                        sector_df[
+                            [
+                                "Stock",
+                                "Close",
+                                "Change %",
+                                "RSI",
+                                "R-Factor",
+                                "Strength"
+                            ]
+                        ],
+                        use_container_width=True
+                    )
+    
+                    st.markdown("---")
 
-        # with col_left:
-        #     st.markdown("### 🚨 Breakout Beacon")
-
-        #     breakout_df = df[
-        #         df["Break 5m High Time"].notna() |
-        #         df["Break Prev High Time"].notna() |
-        #         df["Break Prev Low Time"].notna()
-        #     ]
-            
-            
-
-        #     if not breakout_df.empty:
-        #         st.dataframe(breakout_df, use_container_width=True)
-        #     else:
-        #         st.info("No breakout stocks")
-
-        # ===== Intraday Boost =====
-        with col_right:
-            st.markdown("### 🚀 Intraday Boost")
-
-            boost_df = df.sort_values("R-Factor", ascending=False).head(10)
-            boost_df["Direction"] = np.where(
-                boost_df["Change %"] > 0, "UP", "DOWN"
-            )
-            boost_df = boost_df[['Stock','Close','Change %','Strength','Direction']]
-            boost_df.reset_index(drop=True, inplace=True)
-            
-
-            if not boost_df.empty:
-                st.dataframe(boost_df, use_container_width=True)
-            else:
-                st.info("No breakout stocks")
-                     
-
-            # fig_boost = px.bar(
-            #     boost_df,
-            #     x="Stock",
-            #     y="R-Factor",
-            #     color="Direction",
-            #     color_discrete_map={
-            #         "UP": "green",
-            #         "DOWN": "red"
-            #     }
-            # )
-
-            # st.plotly_chart(fig_boost, use_container_width=True)
-
-        st.markdown("---")
-
-        # ================= SECTOR CHART =================
-        st.subheader("📊 Sector Average Change %")
-
-        sector_df = (
-            df.groupby("Sector")["Change %"]
-            .mean()
-            .reset_index()
-            .sort_values("Change %", ascending=False)
-        )
-
-        fig_sector = px.bar(
-            sector_df,
-            x="Sector",
-            y="Change %",
-            color="Change %",
-            color_continuous_scale=["red", "yellow", "green"]
-        )
-
-        st.plotly_chart(fig_sector, use_container_width=True)
-
-        st.markdown("---")
-
-        # # ================= STRENGTH CHART =================
-        # st.subheader("📈 Stock Strength Ranking")
-
-        # fig_strength = px.bar(
-        #     df,
-        #     x="Stock",
-        #     y="Strength",
-        #     color="Strength",
-        #     color_continuous_scale=["red", "yellow", "green"]
-        # )
-
-        # st.plotly_chart(fig_strength, use_container_width=True)
-
-        # ================= TABLE =================
-        st.subheader("📋 Detailed Data")
-        st.dataframe(df, use_container_width=True)
 
 # ===== AUTO REFRESH =====
 if auto_refresh:

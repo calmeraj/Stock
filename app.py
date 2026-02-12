@@ -295,7 +295,7 @@ if run_button or auto_refresh:
 
         st.plotly_chart(fig_sector, use_container_width=True)
 
-         st.markdown("---")
+        st.markdown("---")
 
         # # ================= STRENGTH CHART =================
         # st.subheader("📈 Stock Strength Ranking")

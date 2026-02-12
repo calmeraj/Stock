@@ -100,7 +100,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from datetime import datetime
+from datetime import datetime, time
 import pytz
 
 st.set_page_config(layout="wide")
@@ -117,7 +117,7 @@ STOCK_LIST = [
     "HDFCBANK.NS"
 ]
 
-# ---------------- RSI ----------------
+# ---------------- RSI FUNCTION ----------------
 def calculate_rsi(close, window=14):
     delta = close.diff()
     gain = delta.where(delta > 0, 0).rolling(window).mean()
@@ -129,10 +129,8 @@ def calculate_rsi(close, window=14):
 def analyze_stock(symbol):
     try:
         ticker = yf.Ticker(symbol)
-        info = ticker.info
-        sector = info.get("sector", "Unknown")
 
-        # Daily data
+        # -------- Daily data
         daily = ticker.history(period="30d")
         if daily.empty or len(daily) < 15:
             return None
@@ -140,20 +138,28 @@ def analyze_stock(symbol):
         prev_day = daily.iloc[-2]
         today = daily.iloc[-1]
 
-        # Intraday 5m
+        # -------- Intraday 5m data
         intraday = ticker.history(period="1d", interval="5m")
         if intraday.empty or len(intraday) < 5:
             return None
 
         intraday = intraday.reset_index()
-        intraday['Datetime'] = intraday['Datetime'].dt.tz_convert(IST)
+
+        # -------- Safe timezone handling
+        if intraday['Datetime'].dt.tz is None:
+            intraday['Datetime'] = intraday['Datetime'].dt.tz_localize("UTC").dt.tz_convert(IST)
+        else:
+            intraday['Datetime'] = intraday['Datetime'].dt.tz_convert(IST)
 
         intraday['RSI'] = calculate_rsi(intraday['Close'])
 
-        # Opening Range
+        # -------- Opening Range (09:15–09:19)
+        open_start = time(9, 15)
+        open_end = time(9, 19)
+
         open_range = intraday[
-            (intraday['Datetime'].dt.time >= datetime.strptime("09:15", "%H:%M").time()) &
-            (intraday['Datetime'].dt.time <= datetime.strptime("09:20", "%H:%M").time())
+            (intraday['Datetime'].dt.time >= open_start) &
+            (intraday['Datetime'].dt.time <= open_end)
         ]
 
         if open_range.empty:
@@ -162,9 +168,7 @@ def analyze_stock(symbol):
         orb_high = open_range['High'].max()
         orb_low = open_range['Low'].min()
 
-        after_open = intraday[
-            intraday['Datetime'].dt.time > datetime.strptime("09:19", "%H:%M").time()
-        ]
+        after_open = intraday[intraday['Datetime'].dt.time > open_end]
 
         orb_high_break = after_open[after_open['High'] > orb_high]
         prev_high_break = intraday[intraday['High'] > prev_day['High']]
@@ -179,7 +183,7 @@ def analyze_stock(symbol):
             breakout_type = "PREV_HIGH"
             breakout_time = prev_high_break.iloc[0]['Datetime'].strftime("%H:%M")
 
-        # Strength Logic
+        # -------- Strength Logic
         price_change_pct = (today['Close'] - prev_day['Close']) / prev_day['Close'] * 100
         avg_range = (daily['High'] - daily['Low']).tail(10).mean()
         r_factor = abs(today['Close'] - prev_day['Close']) / avg_range if avg_range else 0
@@ -193,7 +197,6 @@ def analyze_stock(symbol):
 
         return {
             "Stock": symbol,
-            "Sector": sector,
             "Close": round(today['Close'], 2),
             "Change %": round(price_change_pct, 2),
             "RSI": round(intraday['RSI'].iloc[-1], 2),
@@ -204,12 +207,13 @@ def analyze_stock(symbol):
             "Breakout Time": breakout_time
         }
 
-    except:
+    except Exception as e:
+        st.error(f"Error in {symbol}: {e}")
         return None
 
 
 # ---------------- RUN SCANNER ----------------
-@st.cache_data(ttl=600)
+@st.cache_data(ttl=300)
 def run_scanner():
     results = []
 
@@ -227,20 +231,25 @@ if st.button("🚀 Run Scanner"):
     df = run_scanner()
 
     if df.empty:
-        st.warning("No data collected")
+        st.warning("No data collected (Check if market is open)")
     else:
         df = df.sort_values("Strength", ascending=False)
 
-        st.subheader("📋 Stock Strength")
+        st.subheader("📋 Stock Strength Ranking")
         st.dataframe(df, use_container_width=True)
 
-        # -------- Sector Strength
-        sector_df = (
-            df.groupby("Sector")["Strength"]
-            .mean()
-            .reset_index()
-            .sort_values("Strength", ascending=False)
-        )
+        # -------- Color chart
+        st.subheader("📊 Strength Chart")
 
-        st.subheader("📊 Sector Strength")
-        st.dataframe(sector_df, use_container_width=True)
+        df["Strength"] = pd.to_numeric(df["Strength"], errors="coerce").fillna(0)
+        colors = np.where(df["Strength"] >= 0, "green", "red")
+
+        import matplotlib.pyplot as plt
+        plt.figure()
+        plt.bar(df["Stock"], df["Strength"], color=colors)
+        plt.xticks(rotation=45)
+        plt.axhline(0)
+        plt.title("Stock Strength")
+        plt.tight_layout()
+
+        st.pyplot(plt)

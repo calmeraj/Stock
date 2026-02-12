@@ -109,13 +109,26 @@ st.title("📊 Rajkumar Intraday Strength Scanner")
 IST = pytz.timezone("Asia/Kolkata")
 
 # ---------------- STOCK LIST ----------------
-STOCK_LIST = [
-    "RELIANCE.NS",
-    "TCS.NS",
-    "INFY.NS",
-    "ICICIBANK.NS",
-    "HDFCBANK.NS"
-]
+# STOCK_LIST = [
+#     "RELIANCE.NS",
+#     "TCS.NS",
+#     "INFY.NS",
+#     "ICICIBANK.NS",
+#     "HDFCBANK.NS"
+# ]
+STOCK_LIST = ['IDEA.NS','BSE.NS', 'INDUSTOWER.NS', 'RBLBANK.NS', 'GLENMARK.NS', 'KFINTECH.NS', 'NATIONALUM.NS', 'EICHERMOT.NS', 'ASTRAL.NS', 'M&M.NS', 'VEDL.NS', 'ASHOKLEY.NS',
+ 'VOLTAS.NS', 'CHOLAFIN.NS','BIOCON.NS', 'CAMS.NS', 'ANGELONE.NS', 'EXIDEIND.NS', 'MARUTI.NS', 'UNOMINDA.NS', 'IRFC.NS', 'NMDC.NS', 'SAIL.NS', 'NYKAA.NS', 'ABCAPITAL.NS', 'TVSMOTOR.NS',
+ 'POWERGRID.NS', 'AMBER.NS', 'DRREDDY.NS', 'LTF.NS', 'RELIANCE.NS', 'PNBHOUSING.NS', 'NAUKRI.NS', 'SHRIRAMFIN.NS', 'PHOENIXLTD.NS', 'PFC.NS', 'PAYTM.NS', 'KAYNES.NS', 'INOXWIND.NS',
+ 'IREDA.NS', 'CANBK.NS', 'CDSL.NS','NUVAMA.NS', 'ETERNAL.NS', 'MAXHEALTH.NS', 'TATAPOWER.NS', 'PPLPHARMA.NS', 'BDL.NS', 'BHARTIARTL.NS', 'SBILIFE.NS',
+ 'AUROPHARMA.NS', 'SUZLON.NS', 'LAURUSLABS.NS', 'RVNL.NS', 'YESBANK.NS', 'MFSL.NS', 'SONACOMS.NS','SUNPHARMA.NS', 'OIL.NS', 'HDFCLIFE.NS', 'SAMMAANCAP.NS', 'KPITTECH.NS', 'HINDALCO.NS',
+ 'IIFL.NS', 'BAJAJFINSV.NS', 'ALKEM.NS', 'BHEL.NS', 'HINDZINC.NS', 'HUDCO.NS', 'BANDHANBNK.NS', 'AXISBANK.NS', 'TATASTEEL.NS', 'RECLTD.NS', 'IDFCFIRSTB.NS', 'NBCC.NS', 'BHARATFORG.NS', '360ONE.NS',
+ 'ASIANPAINT.NS', 'BOSCHLTD.NS', 'TATAELXSI.NS', 'MUTHOOTFIN.NS', 'IRCTC.NS', 'UNIONBANK.NS', 'BANKINDIA.NS', 'FEDERALBNK.NS', 'SHREECEM.NS', 'TITAGARH.NS', 'JSWENERGY.NS', 'PNB.NS', 'COALINDIA.NS',
+ 'BAJFINANCE.NS', 'MOTHERSON.NS', 'JINDALSTEL.NS', 'INDUSINDBK.NS', 'JUBLFOOD.NS', 'LUPIN.NS', 'HEROMOTOCO.NS', 'HDFCBANK.NS', 'ZYDUSLIFE.NS', 'BAJAJ-AUTO.NS', 'MANAPPURAM.NS', 'BANKBARODA.NS', 'TATACONSUM.NS', 'CONCOR.NS', 'ADANIENT.NS', 'DALBHARAT.NS', 'JSWSTEEL.NS', 'HDFCAMC.NS', 'CUMMINSIND.NS', 'DIXON.NS', 'ADANIGREEN.NS',
+ 'INDIANB.NS', 'KALYANKJIL.NS', 'INDHOTEL.NS', 'TRENT.NS', 'LICHSGFIN.NS', 'IOC.NS', 'BLUESTARCO.NS', 'CROMPTON.NS', 'LICI.NS', 'BRITANNIA.NS', 'BPCL.NS', 'HAVELLS.NS', 'PGEL.NS', 'OFSS.NS', 'AMBUJACEM.NS', 'ICICIBANK.NS', 'TIINDIA.NS', 'GRASIM.NS',
+ 'FORTIS.NS', 'SBICARD.NS', 'HFCL.NS', 'KOTAKBANK.NS', 'HINDPETRO.NS', 'SUPREMEIND.NS', 'LTIM.NS', 'AUBANK.NS', 'ADANIENSOL.NS', 'NESTLEIND.NS', 'DLF.NS', 'SBIN.NS', 'NHPC.NS', 'MAZDOCK.NS', 'NCC.NS', 'ULTRACEMCO.NS', 'POLYCAB.NS', 'DELHIVERY.NS', 'GAIL.NS', 'NTPC.NS', 'INDIGO.NS', 'PETRONET.NS', 'BEL.NS',
+ 'ADANIPORTS.NS', 'APLAPOLLO.NS', 'IEX.NS', 'MCX.NS', 'ICICIPRULI.NS', 'CGPOWER.NS', 'WIPRO.NS', 'TORNTPHARM.NS', 'TATACHEM.NS', 'TATATECH.NS', 'ONGC.NS', 'GMRAIRPORT.NS', 'TITAN.NS',
+ 'MANKIND.NS', 'UNITDSPR.NS', 'HAL.NS', 'DMART.NS', 'PIDILITIND.NS', 'PAGEIND.NS', 'ABB.NS', 'MARICO.NS', 'UPL.NS', 'SOLARINDS.NS', 'LT.NS', 'DABUR.NS', 'GODREJCP.NS', 'PATANJALI.NS', 'APOLLOHOSP.NS', 'HINDUNILVR.NS', 'INFY.NS', 'SYNGENE.NS', 'SRF.NS', 'LODHA.NS',
+ 'CYIENT.NS', 'TECHM.NS', 'TCS.NS', 'CIPLA.NS', 'ICICIGI.NS', 'COLPAL.NS', 'HCLTECH.NS', 'IGL.NS', 'OBEROIRLTY.NS', 'COFORGE.NS', 'DIVISLAB.NS', 'GODREJPROP.NS', 'PIIND.NS', 'ITC.NS', 'SIEMENS.NS', 'KEI.NS', 'MPHASIS.NS', 'POLICYBZR.NS', 'TORNTPOWER.NS', 'PRESTIGE.NS', 'PERSISTENT.NS', 'VBL.NS']
 
 # ---------------- RSI FUNCTION ----------------
 def calculate_rsi(close, window=14):
@@ -238,18 +251,18 @@ if st.button("🚀 Run Scanner"):
         st.subheader("📋 Stock Strength Ranking")
         st.dataframe(df, use_container_width=True)
 
-        # -------- Color chart
-        st.subheader("📊 Strength Chart")
+        # # -------- Color chart
+        # st.subheader("📊 Strength Chart")
 
-        df["Strength"] = pd.to_numeric(df["Strength"], errors="coerce").fillna(0)
-        colors = np.where(df["Strength"] >= 0, "green", "red")
+        # df["Strength"] = pd.to_numeric(df["Strength"], errors="coerce").fillna(0)
+        # colors = np.where(df["Strength"] >= 0, "green", "red")
 
-        import matplotlib.pyplot as plt
-        plt.figure()
-        plt.bar(df["Stock"], df["Strength"], color=colors)
-        plt.xticks(rotation=45)
-        plt.axhline(0)
-        plt.title("Stock Strength")
-        plt.tight_layout()
+        # import matplotlib.pyplot as plt
+        # plt.figure()
+        # plt.bar(df["Stock"], df["Strength"], color=colors)
+        # plt.xticks(rotation=45)
+        # plt.axhline(0)
+        # plt.title("Stock Strength")
+        # plt.tight_layout()
 
-        st.pyplot(plt)
+        # st.pyplot(plt)

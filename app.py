@@ -257,17 +257,17 @@ if st.button("🚀 Run Scanner"):
         st.dataframe(df, use_container_width=True)
 
         # -------- Color chart
-        st.subheader("📊 Strength Chart")
+        # st.subheader("📊 Strength Chart")
 
-        df["Strength"] = pd.to_numeric(df["Strength"], errors="coerce").fillna(0)
-        colors = np.where(df["Strength"] >= 0, "green", "red")
+        # df["Strength"] = pd.to_numeric(df["Strength"], errors="coerce").fillna(0)
+        # colors = np.where(df["Strength"] >= 0, "green", "red")
 
-        import matplotlib.pyplot as plt
-        plt.figure()
-        plt.bar(df["Stock"], df["Strength"], color=colors)
-        plt.xticks(rotation=45)
-        plt.axhline(0)
-        plt.title("Stock Strength")
-        plt.tight_layout()
+        # import matplotlib.pyplot as plt
+        # plt.figure()
+        # plt.bar(df["Stock"], df["Strength"], color=colors)
+        # plt.xticks(rotation=45)
+        # plt.axhline(0)
+        # plt.title("Stock Strength")
+        # plt.tight_layout()
 
-        st.pyplot(plt)
+        # st.pyplot(plt)

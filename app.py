@@ -21,7 +21,7 @@ IST = pytz.timezone("Asia/Kolkata")
 # ================= SIDEBAR =================
 st.sidebar.header("⚙️ Scanner Settings")
 
-# refresh_data = st.sidebar.checkbox("Auto Refresh (5 min)", value=False)
+refresh_data = st.sidebar.checkbox("Auto Refresh (5 min)", value=False)
 run_button = st.sidebar.button("🚀 Run Scanner")
 
 STOCK_LIST = [
@@ -203,6 +203,6 @@ if run_button or refresh_data:
         st.dataframe(df, use_container_width=True)
 
 # ================= AUTO REFRESH =================
-# if refresh_data:
-#     time.sleep(300)
-#     st.rerun()
+if refresh_data:
+    time.sleep(300)
+    st.rerun()

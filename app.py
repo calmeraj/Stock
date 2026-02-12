@@ -250,6 +250,8 @@ if run_button or auto_refresh:
                 boost_df["Change %"] > 0, "UP", "DOWN"
             )
             boost_df = boost_df[['Stock','Close','Change %','Strength','Direction']]
+            boost_df.reset_index(drop=True, inplace=True)
+            
 
             if not boost_df.empty:
                 st.dataframe(boost_df, use_container_width=True)

@@ -71,7 +71,11 @@ if st.button("🚀 Run Analysis"):
         # -----------------------------
         st.subheader("📈 7 Day Performance")
 
-        colors = ["green" if x >= 0 else "red" for x in df["7 Day %"]]
+        # colors = ["green" if x >= 0 else "red" for x in df["7 Day %"]]
+        df["7 Day %"] = pd.to_numeric(df["7 Day %"], errors="coerce")
+
+        colors = ["green" if float(x) >= 0 else "red"
+            for x in df["7 Day %"].fillna(0)]
 
         plt.figure()
         plt.bar(df["Stock"], df["7 Day %"], color=colors)

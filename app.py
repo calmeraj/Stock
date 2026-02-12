@@ -178,35 +178,68 @@ if run_button or auto_refresh:
         # ===== Breakout Beacon =====
         with col_left:
             st.markdown("### 🚨 Breakout Beacon")
-
+        
             breakout_df = df[
                 df["Break 5m High Time"].notna() |
                 df["Break Prev High Time"].notna() |
                 df["Break Prev Low Time"].notna()
-            ]
-            
-            
-
+            ].copy()
+        
             if not breakout_df.empty:
-                st.dataframe(breakout_df, use_container_width=True)
-            #     breakout_df["Signal"] = np.where(
-            #         breakout_df["Change %"] > 0, "BULL", "BEAR"
-            #     )
-
-            #     fig_breakout = px.bar(
-            #         breakout_df.head(10),
-            #         x="Stock",
-            #         y="Change %",
-            #         color="Signal",
-            #         color_discrete_map={
-            #             "BULL": "green",
-            #             "BEAR": "red"
-            #         }
-            #     )
-
-            #     st.plotly_chart(fig_breakout, use_container_width=True)
+        
+                # ===== ADD LATEST BREAK TIME COLUMN =====
+                def get_latest_break(row):
+                    times = [
+                        row["Break 5m High Time"],
+                        row["Break 5m Low Time"],
+                        row["Break Prev High Time"],
+                        row["Break Prev Low Time"],
+                    ]
+        
+                    times = [t for t in times if pd.notna(t)]
+        
+                    if times:
+                        return max(times, key=lambda t: datetime.strptime(t, "%H:%M"))
+                    else:
+                        return None
+        
+                breakout_df["Latest Break Time"] = breakout_df.apply(get_latest_break, axis=1)
+        
+                # Optional: sort by latest time descending
+                breakout_df = breakout_df.sort_values("Latest Break Time", ascending=False)
+        
+                st.dataframe(
+                    breakout_df[
+                        [
+                            "Stock",
+                            "Break 5m High Time",
+                            "Break 5m Low Time",
+                            "Break Prev High Time",
+                            "Break Prev Low Time",
+                            "Latest Break Time",
+                        ]
+                    ],
+                    use_container_width=True
+                )
+        
             else:
                 st.info("No breakout stocks")
+
+        # with col_left:
+        #     st.markdown("### 🚨 Breakout Beacon")
+
+        #     breakout_df = df[
+        #         df["Break 5m High Time"].notna() |
+        #         df["Break Prev High Time"].notna() |
+        #         df["Break Prev Low Time"].notna()
+        #     ]
+            
+            
+
+        #     if not breakout_df.empty:
+        #         st.dataframe(breakout_df, use_container_width=True)
+        #     else:
+        #         st.info("No breakout stocks")
 
         # ===== Intraday Boost =====
         with col_right:

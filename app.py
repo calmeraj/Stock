@@ -184,10 +184,11 @@ if run_button or auto_refresh:
                 df["Break Prev High Time"].notna() |
                 df["Break Prev Low Time"].notna()
             ]
-            st.dataframe(breakout_df, use_container_width=True)
+            
             
 
-            # if not breakout_df.empty:
+            if not breakout_df.empty:
+                st.dataframe(breakout_df, use_container_width=True)
             #     breakout_df["Signal"] = np.where(
             #         breakout_df["Change %"] > 0, "BULL", "BEAR"
             #     )
@@ -215,7 +216,12 @@ if run_button or auto_refresh:
             boost_df["Direction"] = np.where(
                 boost_df["Change %"] > 0, "UP", "DOWN"
             )
-            st.dataframe(boost_df, use_container_width=True)
+
+            if not boost_df.empty:
+                st.dataframe(boost_df, use_container_width=True)
+            else:
+                st.info("No breakout stocks")
+                     
 
             # fig_boost = px.bar(
             #     boost_df,

@@ -142,6 +142,8 @@ def calculate_rsi(close, window=14):
 def analyze_stock(symbol):
     try:
         ticker = yf.Ticker(symbol)
+        info = ticker.info
+        sector = info.get("sector", "Unknown")
 
         # -------- Daily data
         daily = ticker.history(period="30d")
@@ -210,6 +212,7 @@ def analyze_stock(symbol):
 
         return {
             "Stock": symbol,
+            "sector":Sector,
             "Close": round(today['Close'], 2),
             "Change %": round(price_change_pct, 2),
             "RSI": round(intraday['RSI'].iloc[-1], 2),

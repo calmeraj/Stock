@@ -143,6 +143,69 @@ if run_button or refresh_data:
         st.warning("No data available")
     else:
         df = df.sort_values("Strength", ascending=False)
+        st.markdown("## 🔥 Market Pulse")
+
+    col_left, col_right = st.columns(2)
+    
+    # ================= BREAKOUT BEACON =================
+    with col_left:
+        st.markdown("### 🚨 Breakout Beacon")
+    
+        breakout_df = df[
+            df["Break 5m High Time"].notna() |
+            df["Break Prev High Time"].notna() |
+            df["Break Prev Low Time"].notna()
+        ].copy()
+    
+        if not breakout_df.empty:
+    
+            breakout_df["Signal"] = np.where(
+                breakout_df["Change %"] > 0, "BULL", "BEAR"
+            )
+    
+            breakout_df = breakout_df.sort_values("Strength", ascending=False)
+    
+            fig_breakout = px.bar(
+                breakout_df.head(10),
+                x="Stock",
+                y="Change %",
+                color="Signal",
+                color_discrete_map={
+                    "BULL": "green",
+                    "BEAR": "red"
+                },
+                title="Top Breakout Stocks"
+            )
+    
+            st.plotly_chart(fig_breakout, use_container_width=True)
+    
+        else:
+            st.info("No breakout stocks detected")
+    
+    # ================= INTRADAY BOOST =================
+    with col_right:
+        st.markdown("### 🚀 Intraday Boost")
+    
+        boost_df = df.sort_values("R-Factor", ascending=False).head(10)
+    
+        boost_df["Direction"] = np.where(
+            boost_df["Change %"] > 0, "UP", "DOWN"
+        )
+    
+        fig_boost = px.bar(
+            boost_df,
+            x="Stock",
+            y="R-Factor",
+            color="Direction",
+            color_discrete_map={
+                "UP": "green",
+                "DOWN": "red"
+            },
+            title="Top Momentum Stocks (R-Factor)"
+        )
+    
+        st.plotly_chart(fig_boost, use_container_width=True)
+
 
         # ================= KPI ROW =================
         col1, col2, col3, col4 = st.columns(4)

@@ -212,7 +212,7 @@ def analyze_stock(symbol):
 
         return {
             "Stock": symbol,
-            "sector":Sector,
+            "sector": sector,
             "Close": round(today['Close'], 2),
             "Change %": round(price_change_pct, 2),
             "RSI": round(intraday['RSI'].iloc[-1], 2),
